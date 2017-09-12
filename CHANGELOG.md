@@ -1,0 +1,2 @@
+# Azure Function Plugin Changelog
+
