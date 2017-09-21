@@ -9,6 +9,7 @@ package com.microsoft.jenkins.function;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.FunctionApp;
 import com.microsoft.azure.util.AzureCredentials;
+import com.microsoft.jenkins.appservice.BaseDeploymentRecorder;
 import com.microsoft.jenkins.exceptions.AzureCloudException;
 import com.microsoft.jenkins.function.util.AzureUtils;
 import com.microsoft.jenkins.function.util.Constants;

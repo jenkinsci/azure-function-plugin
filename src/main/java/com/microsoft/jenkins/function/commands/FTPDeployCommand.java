@@ -7,7 +7,7 @@ package com.microsoft.jenkins.function.commands;
 
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebAppBase;
-import com.microsoft.jenkins.function.util.FilePathUtils;
+import com.microsoft.jenkins.appservice.util.FilePathUtils;
 import com.microsoft.jenkins.azurecommons.command.IBaseCommandData;
 import com.microsoft.jenkins.azurecommons.command.ICommand;
 import hudson.FilePath;
