@@ -90,6 +90,8 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
         if (!isStoppedBeforeDeployment) {
             context.getWebAppBase().start();
         }
+        
+        context.setCommandState(CommandState.Success);
     }
 
     private static final class FTPDeployCommandOnSlave extends MasterToSlaveCallable<Void, FTPException> {
