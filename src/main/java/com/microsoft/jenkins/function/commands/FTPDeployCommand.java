@@ -8,6 +8,7 @@ package com.microsoft.jenkins.function.commands;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.jenkins.appservice.util.FilePathUtils;
+import com.microsoft.jenkins.azurecommons.command.CommandState;
 import com.microsoft.jenkins.azurecommons.command.IBaseCommandData;
 import com.microsoft.jenkins.azurecommons.command.ICommand;
 import hudson.FilePath;
@@ -90,7 +91,7 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
         if (!isStoppedBeforeDeployment) {
             context.getWebAppBase().start();
         }
-        
+
         context.setCommandState(CommandState.Success);
     }
 
