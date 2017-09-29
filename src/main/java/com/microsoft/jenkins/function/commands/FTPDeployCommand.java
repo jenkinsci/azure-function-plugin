@@ -7,10 +7,10 @@ package com.microsoft.jenkins.function.commands;
 
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebAppBase;
-import com.microsoft.jenkins.appservice.util.FilePathUtils;
 import com.microsoft.jenkins.azurecommons.command.CommandState;
 import com.microsoft.jenkins.azurecommons.command.IBaseCommandData;
 import com.microsoft.jenkins.azurecommons.command.ICommand;
+import com.microsoft.jenkins.function.util.FilePathUtils;
 import hudson.FilePath;
 import hudson.Util;
 import hudson.model.TaskListener;
@@ -83,7 +83,7 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
                 context.getFilePath()
             ));
         } catch (IOException | FTPException e) {
-            context.logError("Fail to deploy to FTP: " + e.getMessage());
+            context.logError("Fail to deploy to FTP: ", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
