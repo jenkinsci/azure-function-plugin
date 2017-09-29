@@ -87,6 +87,7 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
         } catch (IOException | FTPException e) {
             context.logError("Fail to deploy to FTP: ", e);
         } catch (InterruptedException e) {
+            context.logError("Interrupted: ", e);
             Thread.currentThread().interrupt();
         } finally {
             if (!isStoppedBeforeDeployment) {

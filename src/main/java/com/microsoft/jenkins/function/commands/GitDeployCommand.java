@@ -112,7 +112,7 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
 
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
-            context.logError("Fail to deploy using Git: " + e.getMessage());
+            context.logError("Fail to deploy using Git: ", e);
         }
     }
 
