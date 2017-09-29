@@ -82,17 +82,17 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
                 context.getTargetDirectory(),
                 context.getFilePath()
             ));
+
+            context.setCommandState(CommandState.Success);
         } catch (IOException | FTPException e) {
             context.logError("Fail to deploy to FTP: ", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        } finally {
+            if (!isStoppedBeforeDeployment) {
+                context.getWebAppBase().start();
+            }
         }
-
-        if (!isStoppedBeforeDeployment) {
-            context.getWebAppBase().start();
-        }
-
-        context.setCommandState(CommandState.Success);
     }
 
     private static final class FTPDeployCommandOnSlave extends MasterToSlaveCallable<Void, FTPException> {
