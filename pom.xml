@@ -14,7 +14,7 @@
         <version>2.6</version>
     </parent>
     <artifactId>azure-function</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>hpi</packaging>
 
     <properties>
@@ -52,7 +52,8 @@
         <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
         <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
-    </scm>
+      <tag>azure-function-0.1.0</tag>
+  </scm>
 
     <pluginRepositories>
         <pluginRepository>
