@@ -20,4 +20,14 @@ public final class Constants {
     // the first option for select element. Keep the same value as jenkins pre-defined default empty value.
     public static final String EMPTY_SELECTION = "- none -";
 
+    /**
+     * AI constants.
+     */
+    public static final String AI_FUNCTION_APP = "FunctionApp";
+    public static final String AI_START_DEPLOY = "StartDeploy";
+    public static final String AI_CONFIGURE_FAILED = "ConfigureFailed";
+    public static final String AI_GIT_DEPLOY = "GitDeploy";
+    public static final String AI_GIT_DEPLOY_FAILED = "GitDeployFailed";
+    public static final String AI_FTP_DEPLOY = "FTPDeploy";
+    public static final String AI_FTP_DEPLOY_FAILED = "FTPDeployFailed";
 }

@@ -10,6 +10,9 @@ import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.jenkins.azurecommons.command.CommandState;
 import com.microsoft.jenkins.azurecommons.command.IBaseCommandData;
 import com.microsoft.jenkins.azurecommons.command.ICommand;
+import com.microsoft.jenkins.azurecommons.telemetry.AppInsightsUtils;
+import com.microsoft.jenkins.function.AzureFunctionPlugin;
+import com.microsoft.jenkins.function.util.Constants;
 import com.microsoft.jenkins.function.util.FilePathUtils;
 import hudson.FilePath;
 import hudson.Util;
@@ -84,8 +87,17 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
             ));
 
             context.setCommandState(CommandState.Success);
+            AzureFunctionPlugin.sendEvent(Constants.AI_FUNCTION_APP, Constants.AI_FTP_DEPLOY,
+                    "Run", AppInsightsUtils.hash(context.getJobContext().getRun().getUrl()),
+                    "ResourceGroup", AppInsightsUtils.hash(context.getWebAppBase().resourceGroupName()),
+                    "FunctionApp", AppInsightsUtils.hash(context.getWebAppBase().name()));
         } catch (IOException | FTPException e) {
             context.logError("Fail to deploy to FTP: ", e);
+            AzureFunctionPlugin.sendEvent(Constants.AI_FUNCTION_APP, Constants.AI_FTP_DEPLOY_FAILED,
+                    "Run", AppInsightsUtils.hash(context.getJobContext().getRun().getUrl()),
+                    "ResourceGroup", AppInsightsUtils.hash(context.getWebAppBase().resourceGroupName()),
+                    "FunctionApp", AppInsightsUtils.hash(context.getWebAppBase().name()),
+                    "Message", e.getMessage());
         } catch (InterruptedException e) {
             context.logError("Interrupted: ", e);
             Thread.currentThread().interrupt();

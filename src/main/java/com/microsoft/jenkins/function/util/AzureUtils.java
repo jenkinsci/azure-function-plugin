@@ -9,6 +9,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.util.AzureCredentials;
+import com.microsoft.jenkins.function.AzureFunctionPlugin;
 import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 
@@ -77,6 +78,7 @@ public final class AzureUtils {
     public static Azure buildAzureClient(final AzureCredentials.ServicePrincipal servicePrincipal) {
         return Azure
                 .configure()
+                .withInterceptor(new AzureFunctionPlugin.AzureTelemetryInterceptor())
                 .withLogLevel(Constants.DEFAULT_AZURE_SDK_LOGGING_LEVEL)
                 .withUserAgent(getUserAgent())
                 .authenticate(fromServicePrincipal(servicePrincipal))

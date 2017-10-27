@@ -10,6 +10,7 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.FunctionApp;
 import com.microsoft.azure.util.AzureCredentials;
 import com.microsoft.jenkins.appservice.BaseDeploymentRecorder;
+import com.microsoft.jenkins.azurecommons.telemetry.AppInsightsUtils;
 import com.microsoft.jenkins.exceptions.AzureCloudException;
 import com.microsoft.jenkins.function.util.AzureUtils;
 import com.microsoft.jenkins.function.util.Constants;
@@ -63,6 +64,13 @@ public class FunctionAppDeploymentRecorder extends BaseDeploymentRecorder {
         final Azure azureClient = AzureUtils.buildAzureClient(AzureCredentials.getServicePrincipal(azureCredentialsId));
         final String resourceGroup = getResourceGroup();
         final String appName = getAppName();
+
+        AzureFunctionPlugin.sendEvent(Constants.AI_FUNCTION_APP, Constants.AI_START_DEPLOY,
+                "Run", AppInsightsUtils.hash(run.getUrl()),
+                "Subscription", AppInsightsUtils.hash(azureClient.subscriptionId()),
+                "ResourceGroup", AppInsightsUtils.hash(resourceGroup),
+                "FunctionApp", AppInsightsUtils.hash(appName));
+
         final FunctionApp app = azureClient.appServices().functionApps().getByResourceGroup(resourceGroup, appName);
         if (app == null) {
             throw new AbortException(String.format("Function App %s in resource group %s not found",
@@ -78,6 +86,13 @@ public class FunctionAppDeploymentRecorder extends BaseDeploymentRecorder {
         try {
             commandContext.configure(run, workspace, launcher, listener, app);
         } catch (AzureCloudException e) {
+            AzureFunctionPlugin.sendEvent(Constants.AI_FUNCTION_APP, Constants.AI_CONFIGURE_FAILED,
+                    "Run", AppInsightsUtils.hash(run.getUrl()),
+                    "Subscription", AppInsightsUtils.hash(azureClient.subscriptionId()),
+                    "ResourceGroup", AppInsightsUtils.hash(resourceGroup),
+                    "FunctionApp", AppInsightsUtils.hash(appName),
+                    "Message", e.getMessage());
+
             throw new AbortException(e.getMessage());
         }
 
