@@ -8,7 +8,6 @@ package com.microsoft.jenkins.function;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.FunctionApp;
-import com.microsoft.azure.util.AzureCredentials;
 import com.microsoft.jenkins.appservice.BaseDeploymentRecorder;
 import com.microsoft.jenkins.azurecommons.telemetry.AppInsightsUtils;
 import com.microsoft.jenkins.exceptions.AzureCloudException;
@@ -60,8 +59,7 @@ public class FunctionAppDeploymentRecorder extends BaseDeploymentRecorder {
         listener.getLogger().println("Starting Azure Function App Deployment");
 
         // Get app info
-        final String azureCredentialsId = getAzureCredentialsId();
-        final Azure azureClient = AzureUtils.buildAzureClient(AzureCredentials.getServicePrincipal(azureCredentialsId));
+        final Azure azureClient = AzureUtils.buildClient(getAzureCredentialsId());
         final String resourceGroup = getResourceGroup();
         final String appName = getAppName();
 
@@ -131,8 +129,7 @@ public class FunctionAppDeploymentRecorder extends BaseDeploymentRecorder {
                                                @QueryParameter final String resourceGroup) {
             final ListBoxModel model = new ListBoxModel(new ListBoxModel.Option(Constants.EMPTY_SELECTION, ""));
             if (StringUtils.isNotBlank(azureCredentialsId) && StringUtils.isNotBlank(resourceGroup)) {
-                final Azure azureClient = AzureUtils.buildAzureClient(
-                        AzureCredentials.getServicePrincipal(azureCredentialsId));
+                final Azure azureClient = AzureUtils.buildClient(azureCredentialsId);
                 for (FunctionApp app : azureClient.appServices().functionApps().listByResourceGroup(resourceGroup)) {
                     model.add(app.name());
                 }
