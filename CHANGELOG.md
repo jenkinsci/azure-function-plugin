@@ -1,5 +1,8 @@
 # Azure Function Plugin Changelog
 
+## Version 0.2.0, 2018-01-09
+* Support MSI
+ 
 ## Version 0.1.2, 2017-11-07
 * Specify refspec explicitly when doing git push
 * Add Third Party Notice
