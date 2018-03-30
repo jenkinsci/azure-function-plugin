@@ -59,7 +59,7 @@ public class FunctionAppDeploymentRecorder extends BaseDeploymentRecorder {
         listener.getLogger().println("Starting Azure Function App Deployment");
 
         // Get app info
-        final Azure azureClient = AzureUtils.buildClient(getAzureCredentialsId());
+        final Azure azureClient = AzureUtils.buildClient(run.getParent(), getAzureCredentialsId());
         final String resourceGroup = getResourceGroup();
         final String appName = getAppName();
 
@@ -117,19 +117,21 @@ public class FunctionAppDeploymentRecorder extends BaseDeploymentRecorder {
             return "Publish an Azure Function App";
         }
 
-        public ListBoxModel doFillAzureCredentialsIdItems(@AncestorInPath final Item owner) {
+        public ListBoxModel doFillAzureCredentialsIdItems(@AncestorInPath Item owner) {
             return listAzureCredentialsIdItems(owner);
         }
 
-        public ListBoxModel doFillResourceGroupItems(@QueryParameter final String azureCredentialsId) {
-            return listResourceGroupItems(azureCredentialsId);
+        public ListBoxModel doFillResourceGroupItems(@AncestorInPath Item owner,
+                                                     @QueryParameter String azureCredentialsId) {
+            return listResourceGroupItems(owner, azureCredentialsId);
         }
 
-        public ListBoxModel doFillAppNameItems(@QueryParameter final String azureCredentialsId,
-                                               @QueryParameter final String resourceGroup) {
+        public ListBoxModel doFillAppNameItems(@AncestorInPath Item owner,
+                                               @QueryParameter String azureCredentialsId,
+                                               @QueryParameter String resourceGroup) {
             final ListBoxModel model = new ListBoxModel(new ListBoxModel.Option(Constants.EMPTY_SELECTION, ""));
             if (StringUtils.isNotBlank(azureCredentialsId) && StringUtils.isNotBlank(resourceGroup)) {
-                final Azure azureClient = AzureUtils.buildClient(azureCredentialsId);
+                final Azure azureClient = AzureUtils.buildClient(owner, azureCredentialsId);
                 for (FunctionApp app : azureClient.appServices().functionApps().listByResourceGroup(resourceGroup)) {
                     model.add(app.name());
                 }
