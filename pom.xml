@@ -20,14 +20,13 @@
     <properties>
         <jenkins.version>1.651.3</jenkins.version>
         <java.level>7</java.level>
-        <jenkins-test-harness.version>2.1</jenkins-test-harness.version>
         <jackson.version>2.7.4</jackson.version>
         <guava.version>19.0</guava.version>
         <powermock.version>1.7.0RC2</powermock.version>
         <azuresdk.version>1.2.1</azuresdk.version>
-        <azure-commons.version>0.2.3</azure-commons.version>
-        <azure-credentials.version>1.4.0</azure-credentials.version>
-        <azure-app-service.version>0.2.0</azure-app-service.version>
+        <azure-commons.version>0.2.5</azure-commons.version>
+        <azure-credentials.version>1.6.0</azure-credentials.version>
+        <azure-app-service.version>0.3.0</azure-app-service.version>
     </properties>
 
     <name>Azure Function Plugin</name>
@@ -63,18 +62,6 @@
     </pluginRepositories>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jenkins-ci.main</groupId>
-            <artifactId>jenkins-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -145,30 +132,6 @@
             <version>2.15.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-model</artifactId>
-            <version>3.3.9</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-plugin-api</artifactId>
-            <version>3.3.9</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jenkins-ci.main</groupId>
-            <artifactId>jenkins-test-harness</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.19.1</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
