@@ -72,7 +72,7 @@ public class FunctionAppDeploymentCommandContext extends BaseCommandContext
         CommandService.Builder builder = CommandService.builder();
         if (isJava) {
             // For Java function, use FTP-based deployment as it's the recommended way
-            builder.withStartCommand(FTPDeployCommand.class);
+            builder.withStartCommand(ZipDeployCommand.class);
         } else {
             // For non-Java function, use Git-based deployment
             builder.withStartCommand(GitDeployCommand.class);

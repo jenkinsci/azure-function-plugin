@@ -36,14 +36,10 @@ public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCom
             final DirScanner.Glob globScanner = new DirScanner.Glob(filePattern, excludedFilesAndZip());
             workspace.zip(zipPath.write(), globScanner);
 
-
             WebAppBase functionApp = context.getWebAppBase();
-
             try (InputStream stream = zipPath.read()) {
                 functionApp.zipDeploy(stream);
             }
-
-
             tempDir.deleteRecursive();
 
             context.setCommandState(CommandState.Success);
@@ -64,8 +60,11 @@ public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCom
         }
     }
 
+    /**
+     * Make sure we exclude the tempPath and local setting file from archiving.
+     * @return excluded files in ant pattern
+     */
     private String excludedFilesAndZip() {
-        // Make sure we exclude the tempPath from archiving.
         String excludesWithoutZip = "**/" + ZIP_FOLDER_NAME + "*/" + ZIP_NAME;
         excludesWithoutZip = LOCAL_SETTINGS_FILE + "," + excludesWithoutZip;
         return excludesWithoutZip;
