@@ -67,8 +67,6 @@ public class ITZipDeployCommand extends IntegrationTest{
                 .define(testEnv.appServiceName)
                 .withExistingAppServicePlan(asp)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                 .create();
         Assert.assertNotNull(function);
         when(commandDataMock.getWebAppBase()).thenReturn(function);
@@ -96,7 +94,7 @@ public class ITZipDeployCommand extends IntegrationTest{
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + function.defaultHostName() + "/sample/"), "Sample \"Hello, World\" Application", 300);
+        Utils.waitForAppReady(new URL("https://" + function.defaultHostName() + "/api/..."), "Sample \"Hello, World\" Application", 300);
     }
 
     /**

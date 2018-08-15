@@ -1,5 +1,6 @@
 package com.microsoft.jenkins.function.integration;
 
+import com.google.common.io.Files;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.*;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -64,7 +65,7 @@ public class ITGitDeployCommand extends IntegrationTest{
         Assert.assertNotNull(appServicePlan);
 
         // Create workspace
-        File workspaceDir = com.google.common.io.Files.createTempDir();
+        File workspaceDir = Files.createTempDir();
         workspaceDir.deleteOnExit();
         JobContext jobContextMock = mock(JobContext.class);
         when(commandDataMock.getJobContext()).thenReturn(jobContextMock);
@@ -116,7 +117,7 @@ public class ITGitDeployCommand extends IntegrationTest{
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()),"Hello NodeJS!", 300);
+        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/JSExample?name=Azure"),"Hello Azure!", 300);
     }
 
     /**
@@ -148,7 +149,7 @@ public class ITGitDeployCommand extends IntegrationTest{
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()),"Hello Azure!", 300);
+        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/CSharpExample?name=Azure"),"Hello Azure!", 300);
     }
 
     /**
@@ -183,6 +184,6 @@ public class ITGitDeployCommand extends IntegrationTest{
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()),"Hello, Azure!", 300);
+        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/FSharpExample?name=Azure"),"Hello, Azure!", 300);
     }
 }
