@@ -82,45 +82,15 @@ public class ITZipDeployCommand extends IntegrationTest{
     }
 
     /**
-     * This test uploads a normal war file to deploy java app and verifies web page content
-     *
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    @Test
-    public void warDeployNonRoot() throws IOException, InterruptedException {
-        Utils.extractResourceFile(getClass(), "sample-java-app/app.war", workspace.child("webapps/sample.war").getRemote());
-        when(commandDataMock.getFilePath()).thenReturn("webapps/sample.war");
-
-        command.execute(commandDataMock);
-
-        Utils.waitForAppReady(new URL("https://" + function.defaultHostName() + "/api/..."), "Sample \"Hello, World\" Application", 300);
-    }
-
-    /**
-     * This test uploads a root war file to deploy java app and verifies web page content
-     *
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    @Test
-    public void warDeployRoot() throws IOException, InterruptedException {
-        Utils.extractResourceFile(getClass(), "sample-java-app/app.war", workspace.child("webapps/ROOT.war").getRemote());
-        when(commandDataMock.getFilePath()).thenReturn("webapps/ROOT.war");
-
-        command.execute(commandDataMock);
-
-        Utils.waitForAppReady(new URL("https://" + function.defaultHostName()), "Sample \"Hello, World\" Application", 300);
-    }
-
-    /**
      *  This test uploads a zip file to deploy java app and verifies web page content
      * @throws IOException
      * @throws InterruptedException
      */
     @Test
     public void zipDeploy() throws IOException, InterruptedException {
-        Utils.extractResourceFile(getClass(), "sample-java-app-zip/gs-spring-boot-0.1.0.zip", workspace.child("gs-spring-boot-0.1.0.zip").getRemote());
+        Utils.extractResourceFile(getClass(), "sample-java-func/host.json", workspace.child("host.json").getRemote());
+        Utils.extractResourceFile(getClass(), "sample-java-func/jenkins-function-1.0-SNAPSHOT.jar", workspace.child("jenkins-function-1.0-SNAPSHOT.jar").getRemote());
+        Utils.extractResourceFile(getClass(), "sample-java-func/HttpTrigger-Java/function.json", workspace.child("HttpTrigger-Java/function.json").getRemote());
         when(commandDataMock.getFilePath()).thenReturn("*.zip");
 
         command.execute(commandDataMock);

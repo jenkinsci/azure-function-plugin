@@ -117,7 +117,7 @@ public class ITGitDeployCommand extends IntegrationTest{
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/JSExample?name=Azure"),"Hello Azure!", 300);
+        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/JSExample?name=Azure"),"Hello Azure", 300);
     }
 
     /**
@@ -149,7 +149,7 @@ public class ITGitDeployCommand extends IntegrationTest{
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/CSharpExample?name=Azure"),"Hello Azure!", 300);
+        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/CSharpExample?name=Azure"),"Hello Azure", 300);
     }
 
     /**
@@ -184,6 +184,6 @@ public class ITGitDeployCommand extends IntegrationTest{
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/FSharpExample?name=Azure"),"Hello, Azure!", 300);
+        Utils.waitForAppReady(new URL("https://" + webApp.defaultHostName()+"/api/FSharpExample?name=Azure"),"Hello Azure", 300);
     }
 }
