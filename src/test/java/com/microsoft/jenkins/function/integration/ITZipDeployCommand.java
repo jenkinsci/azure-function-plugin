@@ -27,6 +27,7 @@ public class ITZipDeployCommand extends IntegrationTest{
     private ZipDeployCommand.IZipDeployCommandData commandDataMock = null;
     private WebAppBase function = null;
     private FilePath workspace = null;
+    private static final String FUNCTION_VERSION_BETA = "beta";
 
     @Override
     @Before
@@ -67,6 +68,7 @@ public class ITZipDeployCommand extends IntegrationTest{
                 .define(testEnv.appServiceName)
                 .withExistingAppServicePlan(asp)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
+                .withRuntimeVersion(FUNCTION_VERSION_BETA)
                 .create();
         Assert.assertNotNull(function);
         when(commandDataMock.getWebAppBase()).thenReturn(function);

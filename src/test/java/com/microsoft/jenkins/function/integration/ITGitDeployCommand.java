@@ -2,8 +2,10 @@ package com.microsoft.jenkins.function.integration;
 
 import com.google.common.io.Files;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.*;
+import com.microsoft.azure.management.appservice.FunctionApp;
+import com.microsoft.azure.management.appservice.PythonVersion;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.jenkins.azurecommons.JobContext;
 import com.microsoft.jenkins.azurecommons.core.AzureClientFactory;
 import com.microsoft.jenkins.function.commands.GitDeployCommand;
@@ -29,7 +31,6 @@ public class ITGitDeployCommand extends IntegrationTest{
 
     private GitDeployCommand command = null;
     private GitDeployCommand.IGitDeployCommandData commandDataMock = null;
-    private AppServicePlan appServicePlan = null;
     private FilePath workspace = null;
 
     @Override
@@ -53,16 +54,6 @@ public class ITGitDeployCommand extends IntegrationTest{
                 .withRegion(testEnv.azureLocation)
                 .create();
         Assert.assertNotNull(resourceGroup);
-
-        // Create app service plan
-        appServicePlan = azureClient.appServices().appServicePlans()
-                .define(testEnv.appServicePlanName)
-                .withRegion(testEnv.azureLocation)
-                .withNewResourceGroup(testEnv.azureResourceGroup)
-                .withPricingTier(testEnv.appServicePricingTier)
-                .withOperatingSystem(OperatingSystem.WINDOWS)
-                .create();
-        Assert.assertNotNull(appServicePlan);
 
         // Create workspace
         File workspaceDir = Files.createTempDir();
@@ -103,7 +94,7 @@ public class ITGitDeployCommand extends IntegrationTest{
                 servicePrincipal.getAzureEnvironment());
         final FunctionApp webApp = azureClient.appServices().functionApps()
                 .define(testEnv.appServiceName)
-                .withExistingAppServicePlan(appServicePlan)
+                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .create();
         Assert.assertNotNull(webApp);
@@ -135,7 +126,7 @@ public class ITGitDeployCommand extends IntegrationTest{
                 servicePrincipal.getAzureEnvironment());
         final FunctionApp webApp = azureClient.appServices().functionApps()
                 .define(testEnv.appServiceName)
-                .withExistingAppServicePlan(appServicePlan)
+                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .create();
         Assert.assertNotNull(webApp);
@@ -167,7 +158,7 @@ public class ITGitDeployCommand extends IntegrationTest{
                 servicePrincipal.getAzureEnvironment());
         final FunctionApp webApp = azureClient.appServices().functionApps()
                 .define(testEnv.appServiceName)
-                .withExistingAppServicePlan(appServicePlan)
+                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .withPythonVersion(PythonVersion.PYTHON_34)
                 .create();
