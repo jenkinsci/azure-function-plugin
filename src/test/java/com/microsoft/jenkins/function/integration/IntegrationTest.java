@@ -34,7 +34,7 @@ public class IntegrationTest {
     @ClassRule
     public static JenkinsRule j = new JenkinsRule();
     @Rule
-    public Timeout globalTimeout = new Timeout(5, TimeUnit.MINUTES);
+    public Timeout globalTimeout = new Timeout(10, TimeUnit.MINUTES);
 
     private static final Logger LOGGER = Logger.getLogger(IntegrationTest.class.getName());
 
