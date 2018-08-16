@@ -2,8 +2,9 @@ package com.microsoft.jenkins.function.integration;
 
 import com.google.common.io.Files;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.*;
+import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.jenkins.azurecommons.JobContext;
 import com.microsoft.jenkins.azurecommons.core.AzureClientFactory;
 import com.microsoft.jenkins.function.commands.ZipDeployCommand;
@@ -16,18 +17,20 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ITZipDeployCommand extends IntegrationTest{
+public class ITZipDeployCommand extends IntegrationTest {
     private ZipDeployCommand command = null;
     private ZipDeployCommand.IZipDeployCommandData commandDataMock = null;
     private WebAppBase function = null;
     private FilePath workspace = null;
-    private static final String FUNCTION_VERSION_BETA = "beta";
+    public static final String FUNCTION_EXTENSION_VERSION_KEY = "FUNCTIONS_EXTENSION_VERSION";
+    private static final String FUNCTION_EXTENSION_VERSION_BETA = "beta";
 
     @Override
     @Before
@@ -55,20 +58,12 @@ public class ITZipDeployCommand extends IntegrationTest{
                 .create();
         Assert.assertNotNull(resourceGroup);
 
-        final AppServicePlan asp = azureClient.appServices().appServicePlans()
-                .define(testEnv.appServicePlanName)
-                .withRegion(testEnv.azureLocation)
-                .withNewResourceGroup(testEnv.azureResourceGroup)
-                .withPricingTier(testEnv.appServicePricingTier)
-                .withOperatingSystem(OperatingSystem.WINDOWS)
-                .create();
-        Assert.assertNotNull(asp);
 
         function = azureClient.appServices().functionApps()
                 .define(testEnv.appServiceName)
-                .withExistingAppServicePlan(asp)
+                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
-                .withRuntimeVersion(FUNCTION_VERSION_BETA)
+                .withAppSetting(FUNCTION_EXTENSION_VERSION_KEY, FUNCTION_EXTENSION_VERSION_BETA)
                 .create();
         Assert.assertNotNull(function);
         when(commandDataMock.getWebAppBase()).thenReturn(function);
@@ -84,19 +79,18 @@ public class ITZipDeployCommand extends IntegrationTest{
     }
 
     /**
-     *  This test uploads a zip file to deploy java app and verifies web page content
+     * This test uploads a zip file to deploy java app and verifies web page content
+     *
      * @throws IOException
      * @throws InterruptedException
      */
     @Test
-    public void zipDeploy() throws IOException, InterruptedException {
-        Utils.extractResourceFile(getClass(), "sample-java-func/host.json", workspace.child("host.json").getRemote());
-        Utils.extractResourceFile(getClass(), "sample-java-func/jenkins-function-1.0-SNAPSHOT.jar", workspace.child("jenkins-function-1.0-SNAPSHOT.jar").getRemote());
-        Utils.extractResourceFile(getClass(), "sample-java-func/HttpTrigger-Java/function.json", workspace.child("HttpTrigger-Java/function.json").getRemote());
-        when(commandDataMock.getFilePath()).thenReturn("*.zip");
+    public void zipDeploy() throws IOException, InterruptedException, URISyntaxException {
+        Utils.extractResourceFolder(getClass(), "sample-java-func", workspace.child("").getRemote());
+        when(commandDataMock.getFilePath()).thenReturn("**");
 
         command.execute(commandDataMock);
 
-        Utils.waitForAppReady(new URL("https://" + function.defaultHostName()), "Greetings from Spring Boot!", 300);
+        Utils.waitForAppReady(new URL("https://" + function.defaultHostName() + "/api/HttpTrigger-Java?clientId=default&name=Azure"), "Hello, Azure", 300);
     }
 }

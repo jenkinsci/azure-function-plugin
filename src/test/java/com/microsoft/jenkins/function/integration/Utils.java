@@ -1,21 +1,25 @@
 package com.microsoft.jenkins.function.integration;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
     /**
      * Extract a resource file to destination path
-     * @param clazz Class with resource
+     *
+     * @param clazz        Class with resource
      * @param resourcePath Resource path
-     * @param dstPath Destination path
+     * @param dstPath      Destination path
      * @throws IOException
      */
     public static void extractResourceFile(Class clazz, String resourcePath, String dstPath) throws IOException {
@@ -29,10 +33,27 @@ public class Utils {
     }
 
     /**
+     * Extract all the resource files under folderPath to destination path
+     *
+     * @param clazz      Class with resource
+     * @param folderPath Resource folder path
+     * @param dstPath    Destination path
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public static void extractResourceFolder(Class clazz, String folderPath, String dstPath) throws IOException, URISyntaxException {
+        URL resource = clazz.getResource(folderPath);
+        File file = Paths.get(resource.toURI()).toFile();
+        File dst = new File(dstPath);
+        FileUtils.copyDirectory(file, dst);
+    }
+
+    /**
      * Check if a web app is ready to respond with certain content
-     * @param url Web app URL
+     *
+     * @param url           Web app URL
      * @param expectContent Expected response content
-     * @param timeout Seconds before timeout
+     * @param timeout       Seconds before timeout
      * @throws IllegalStateException
      * @throws InterruptedException
      */
