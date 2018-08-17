@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -97,6 +98,7 @@ public class ITGitDeployCommand extends IntegrationTest{
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .create();
+        TimeUnit.SECONDS.sleep(10);
         Assert.assertNotNull(webApp);
         when(commandDataMock.getPublishingProfile()).thenReturn(webApp.getPublishingProfile());
         when(commandDataMock.getWebAppBase()).thenReturn(webApp);
@@ -129,6 +131,8 @@ public class ITGitDeployCommand extends IntegrationTest{
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .create();
+        TimeUnit.SECONDS.sleep(10);
+        Assert.assertNotNull(webApp);
         Assert.assertNotNull(webApp);
         when(commandDataMock.getPublishingProfile()).thenReturn(webApp.getPublishingProfile());
         when(commandDataMock.getWebAppBase()).thenReturn(webApp);
@@ -162,6 +166,8 @@ public class ITGitDeployCommand extends IntegrationTest{
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .withPythonVersion(PythonVersion.PYTHON_34)
                 .create();
+        TimeUnit.SECONDS.sleep(10);
+        Assert.assertNotNull(webApp);
         Assert.assertNotNull(webApp);
         when(commandDataMock.getPublishingProfile()).thenReturn(webApp.getPublishingProfile());
         when(commandDataMock.getWebAppBase()).thenReturn(webApp);
