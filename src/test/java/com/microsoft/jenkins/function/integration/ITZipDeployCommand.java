@@ -92,6 +92,7 @@ public class ITZipDeployCommand extends IntegrationTest {
         Assert.assertNotNull(function);
         when(commandDataMock.getWebAppBase()).thenReturn(function);
         Utils.extractResourceFolder(getClass(), "sample-java-func", workspace.child("").getRemote());
+        commandDataMock.logStatus("copy file resources files to " + workspace.child("").getRemote());
         when(commandDataMock.getFilePath()).thenReturn("**");
 
         command.execute(commandDataMock);
