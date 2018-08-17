@@ -59,22 +59,6 @@ public class ITZipDeployCommand extends IntegrationTest {
                 .create();
         Assert.assertNotNull(resourceGroup);
 
-
-        function = azureClient.appServices().functionApps()
-                .define(testEnv.appServiceName)
-                .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(testEnv.azureResourceGroup)
-                .withAppSetting(FUNCTION_EXTENSION_VERSION_KEY, FUNCTION_EXTENSION_VERSION_BETA)
-                .create();
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Assert.assertNotNull(function);
-        when(commandDataMock.getWebAppBase()).thenReturn(function);
-
-
         File workspaceDir = Files.createTempDir();
         workspaceDir.deleteOnExit();
         workspace = new FilePath(workspaceDir);
@@ -92,6 +76,21 @@ public class ITZipDeployCommand extends IntegrationTest {
      */
     @Test
     public void zipDeploy() throws IOException, InterruptedException, URISyntaxException {
+        final Azure azureClient = AzureClientFactory.getClient(
+                servicePrincipal.getClientId(),
+                servicePrincipal.getClientSecret(),
+                servicePrincipal.getTenant(),
+                servicePrincipal.getSubscriptionId(),
+                servicePrincipal.getAzureEnvironment());
+        function = azureClient.appServices().functionApps()
+                .define(testEnv.appServiceName)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(testEnv.azureResourceGroup)
+                .withAppSetting(FUNCTION_EXTENSION_VERSION_KEY, FUNCTION_EXTENSION_VERSION_BETA)
+                .create();
+        TimeUnit.SECONDS.sleep(10);
+        Assert.assertNotNull(function);
+        when(commandDataMock.getWebAppBase()).thenReturn(function);
         Utils.extractResourceFolder(getClass(), "sample-java-func", workspace.child("").getRemote());
         when(commandDataMock.getFilePath()).thenReturn("**");
 
