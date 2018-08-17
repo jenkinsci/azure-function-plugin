@@ -1,8 +1,10 @@
 package com.microsoft.jenkins.function.integration;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.SkuDescription;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.util.AzureCredentials;
 import com.microsoft.jenkins.azurecommons.command.IBaseCommandData;
@@ -73,10 +75,10 @@ public class IntegrationTest {
 
             azureLocation = Region.fromName(TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_LOCATION", "East US"));
             azureLocation2 = Region.fromName(TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_LOCATION", "West Central US"));
-            azureResourceGroup = TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_RESOURCE_GROUP_PREFIX", "appservice-tst") + "-" + TestEnvironment.GenerateRandomString(16);
+            azureResourceGroup = TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_RESOURCE_GROUP_PREFIX", "function-tst") + "-" + TestEnvironment.GenerateRandomString(16);
 
-            appServiceName = TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_AZURE_FUNCTION_NAME_PREFIX", "appservice") + "-" + TestEnvironment.GenerateRandomString(16);
-            appServicePlanName = TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_AZURE_FUNCTION_PLAN_NAME_PREFIX", "appserviceplan") + "-" + TestEnvironment.GenerateRandomString(16);
+            appServiceName = TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_AZURE_FUNCTION_NAME_PREFIX", "function") + "-" + TestEnvironment.GenerateRandomString(16);
+            appServicePlanName = TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_AZURE_FUNCTION_PLAN_NAME_PREFIX", "functionplan") + "-" + TestEnvironment.GenerateRandomString(16);
 
             SkuDescription sd = new SkuDescription();
             sd.withTier(TestEnvironment.loadFromEnv("AZURE_FUNCTION_TEST_DEFAULT_PRICING_TIER_SKU", "SHARED"));

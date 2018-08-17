@@ -18,6 +18,7 @@ import hudson.util.DirScanner;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCommandData> {
     private static final String ZIP_FOLDER_NAME = "fileArchive";
@@ -38,6 +39,7 @@ public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCom
 
             WebAppBase functionApp = context.getWebAppBase();
             try (InputStream stream = zipPath.read()) {
+                TimeUnit.SECONDS.sleep(10);
                 functionApp.zipDeploy(stream);
             }
             tempDir.deleteRecursive();
