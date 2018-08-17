@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -65,6 +66,11 @@ public class ITZipDeployCommand extends IntegrationTest {
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .withAppSetting(FUNCTION_EXTENSION_VERSION_KEY, FUNCTION_EXTENSION_VERSION_BETA)
                 .create();
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Assert.assertNotNull(function);
         when(commandDataMock.getWebAppBase()).thenReturn(function);
 
