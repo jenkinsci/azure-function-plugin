@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!/src/test/resources/com/microsoft/jenkins/function/integration/sample-java-func/*.jar
 *.war
 *.ear
 *.zip

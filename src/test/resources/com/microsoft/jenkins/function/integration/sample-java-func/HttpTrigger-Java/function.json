@@ -1,0 +1,17 @@
+{
+  "scriptFile" : "..\\jenkins-function-1.0-SNAPSHOT.jar",
+  "entryPoint" : "com.jenkinstest.functions.Function.HttpTriggerJava",
+  "bindings" : [ {
+    "type" : "httpTrigger",
+    "name" : "req",
+    "direction" : "in",
+    "webHookType" : "NONE",
+    "authLevel" : "anonymous",
+    "methods" : [ "GET", "POST" ]
+  }, {
+    "type" : "http",
+    "name" : "$return",
+    "direction" : "out"
+  } ],
+  "disabled" : false
+}

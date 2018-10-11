@@ -28,6 +28,8 @@ public final class Constants {
     public static final String AI_CONFIGURE_FAILED = "ConfigureFailed";
     public static final String AI_GIT_DEPLOY = "GitDeploy";
     public static final String AI_GIT_DEPLOY_FAILED = "GitDeployFailed";
+    public static final String AI_ZIP_DEPLOY = "ZipDeploy";
+    public static final String AI_ZIP_DEPLOY_FAILED = "ZipDeployFailed";
     public static final String AI_FTP_DEPLOY = "FTPDeploy";
     public static final String AI_FTP_DEPLOY_FAILED = "FTPDeployFailed";
 }

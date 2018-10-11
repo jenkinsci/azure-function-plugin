@@ -26,6 +26,7 @@ import org.apache.commons.net.ftp.FTPFile;
 import java.io.IOException;
 import java.io.InputStream;
 
+@Deprecated
 public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCommandData> {
 
     private static final String SITE_ROOT = "/site/wwwroot/";
@@ -76,14 +77,14 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
 
         try {
             workspace.act(new FTPDeployCommandOnSlave(
-                context.getJobContext().getTaskListener(),
-                ftpUrl,
-                pubProfile.ftpUsername(),
-                pubProfile.ftpPassword(),
-                workspace,
-                context.getSourceDirectory(),
-                context.getTargetDirectory(),
-                context.getFilePath()
+                    context.getJobContext().getTaskListener(),
+                    ftpUrl,
+                    pubProfile.ftpUsername(),
+                    pubProfile.ftpPassword(),
+                    workspace,
+                    context.getSourceDirectory(),
+                    context.getTargetDirectory(),
+                    context.getFilePath()
             ));
 
             context.setCommandState(CommandState.Success);
@@ -196,8 +197,9 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
 
         /**
          * Remove FTP directory recursively.
+         *
          * @param ftpClient FTP client
-         * @param dir Directory to remove
+         * @param dir       Directory to remove
          * @throws IOException
          */
         private void removeFtpDirectory(final FTPClient ftpClient, final String dir)

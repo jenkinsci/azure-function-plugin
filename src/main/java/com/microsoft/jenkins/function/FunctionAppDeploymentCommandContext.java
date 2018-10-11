@@ -16,8 +16,8 @@ import com.microsoft.jenkins.azurecommons.command.CommandService;
 import com.microsoft.jenkins.azurecommons.command.IBaseCommandData;
 import com.microsoft.jenkins.azurecommons.command.ICommand;
 import com.microsoft.jenkins.exceptions.AzureCloudException;
-import com.microsoft.jenkins.function.commands.FTPDeployCommand;
 import com.microsoft.jenkins.function.commands.GitDeployCommand;
+import com.microsoft.jenkins.function.commands.ZipDeployCommand;
 import hudson.FilePath;
 import hudson.Launcher;
 import hudson.Util;
@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class FunctionAppDeploymentCommandContext extends BaseCommandContext
-        implements FTPDeployCommand.IFTPDeployCommandData, GitDeployCommand.IGitDeployCommandData {
+        implements ZipDeployCommand.IZipDeployCommandData, GitDeployCommand.IGitDeployCommandData {
 
     private final String filePath;
     private String sourceDirectory;
@@ -72,7 +72,7 @@ public class FunctionAppDeploymentCommandContext extends BaseCommandContext
         CommandService.Builder builder = CommandService.builder();
         if (isJava) {
             // For Java function, use FTP-based deployment as it's the recommended way
-            builder.withStartCommand(FTPDeployCommand.class);
+            builder.withStartCommand(ZipDeployCommand.class);
         } else {
             // For non-Java function, use Git-based deployment
             builder.withStartCommand(GitDeployCommand.class);

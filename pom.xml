@@ -23,7 +23,7 @@
         <jackson.version>2.7.4</jackson.version>
         <guava.version>19.0</guava.version>
         <powermock.version>1.7.0RC2</powermock.version>
-        <azuresdk.version>1.2.1</azuresdk.version>
+        <azuresdk.version>1.14.0</azuresdk.version>
         <azure-commons.version>0.2.5</azure-commons.version>
         <azure-credentials.version>1.6.0</azure-credentials.version>
         <azure-app-service.version>0.3.0</azure-app-service.version>
@@ -72,6 +72,18 @@
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure</artifactId>
             <version>${azuresdk.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.microsoft.azure</groupId>
+                    <artifactId>azure-client-runtime</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-client-runtime</artifactId>
+            <version>1.5.4</version>
         </dependency>
 
         <dependency>

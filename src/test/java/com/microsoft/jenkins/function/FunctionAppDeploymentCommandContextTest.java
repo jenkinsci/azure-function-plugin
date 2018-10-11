@@ -9,8 +9,8 @@ import com.microsoft.azure.management.appservice.FunctionApp;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.jenkins.azurecommons.command.CommandState;
 import com.microsoft.jenkins.exceptions.AzureCloudException;
-import com.microsoft.jenkins.function.commands.FTPDeployCommand;
 import com.microsoft.jenkins.function.commands.GitDeployCommand;
+import com.microsoft.jenkins.function.commands.ZipDeployCommand;
 import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.Run;
@@ -100,7 +100,7 @@ public class FunctionAppDeploymentCommandContextTest {
 
         ctx.configure(run, workspace, launcher, listener, app);
         Assert.assertEquals(1, ctx.getCommandService().getRegisteredCommands().size());
-        Assert.assertEquals(FTPDeployCommand.class, ctx.getCommandService().getStartCommandClass());
+        Assert.assertEquals(ZipDeployCommand.class, ctx.getCommandService().getStartCommandClass());
     }
 
     @Test
