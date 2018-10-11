@@ -41,8 +41,8 @@ public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCom
                 functionApp.zipDeploy(stream);
             }
             context.logStatus("Deploy to function " + functionApp.name() + " using file: " + zipPath.getRemote());
-            context.logStatus("tmp file location " + tempDir.getRemote());
-//            tempDir.deleteRecursive();
+            context.logStatus("Tmp file location " + tempDir.getRemote());
+            tempDir.deleteRecursive();
 
             context.setCommandState(CommandState.Success);
             AzureFunctionPlugin.sendEvent(Constants.AI_FUNCTION_APP, Constants.AI_ZIP_DEPLOY,
