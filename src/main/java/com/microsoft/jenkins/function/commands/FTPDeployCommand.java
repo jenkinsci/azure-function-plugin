@@ -197,8 +197,9 @@ public class FTPDeployCommand implements ICommand<FTPDeployCommand.IFTPDeployCom
 
         /**
          * Remove FTP directory recursively.
+         *
          * @param ftpClient FTP client
-         * @param dir Directory to remove
+         * @param dir       Directory to remove
          * @throws IOException
          */
         private void removeFtpDirectory(final FTPClient ftpClient, final String dir)
