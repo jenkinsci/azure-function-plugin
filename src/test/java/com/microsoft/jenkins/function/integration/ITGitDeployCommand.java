@@ -33,6 +33,7 @@ public class ITGitDeployCommand extends IntegrationTest{
     private GitDeployCommand command = null;
     private GitDeployCommand.IGitDeployCommandData commandDataMock = null;
     private FilePath workspace = null;
+    private static final int SLEEP_TIME = 20;
 
     @Override
     @Before
@@ -98,7 +99,7 @@ public class ITGitDeployCommand extends IntegrationTest{
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .create();
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(SLEEP_TIME);
         Assert.assertNotNull(webApp);
         when(commandDataMock.getPublishingProfile()).thenReturn(webApp.getPublishingProfile());
         when(commandDataMock.getWebAppBase()).thenReturn(webApp);
@@ -131,7 +132,7 @@ public class ITGitDeployCommand extends IntegrationTest{
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .create();
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(SLEEP_TIME);
         Assert.assertNotNull(webApp);
         Assert.assertNotNull(webApp);
         when(commandDataMock.getPublishingProfile()).thenReturn(webApp.getPublishingProfile());
@@ -166,7 +167,7 @@ public class ITGitDeployCommand extends IntegrationTest{
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
                 .withPythonVersion(PythonVersion.PYTHON_34)
                 .create();
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(SLEEP_TIME);
         Assert.assertNotNull(webApp);
         Assert.assertNotNull(webApp);
         when(commandDataMock.getPublishingProfile()).thenReturn(webApp.getPublishingProfile());

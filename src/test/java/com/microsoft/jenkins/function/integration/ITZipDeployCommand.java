@@ -30,8 +30,6 @@ public class ITZipDeployCommand extends IntegrationTest {
     private ZipDeployCommand.IZipDeployCommandData commandDataMock = null;
     private WebAppBase function = null;
     private FilePath workspace = null;
-    public static final String FUNCTION_EXTENSION_VERSION_KEY = "FUNCTIONS_EXTENSION_VERSION";
-    private static final String FUNCTION_EXTENSION_VERSION_BETA = "beta";
 
     @Override
     @Before
@@ -86,7 +84,6 @@ public class ITZipDeployCommand extends IntegrationTest {
                 .define(testEnv.appServiceName)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
-                .withAppSetting(FUNCTION_EXTENSION_VERSION_KEY, FUNCTION_EXTENSION_VERSION_BETA)
                 .create();
         TimeUnit.SECONDS.sleep(10);
         Assert.assertNotNull(function);
