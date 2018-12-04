@@ -18,8 +18,6 @@ import hudson.util.DirScanner;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.zip.ZipFile;
 
 public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCommandData> {
     private static final String ZIP_FOLDER_NAME = "fileArchive";
