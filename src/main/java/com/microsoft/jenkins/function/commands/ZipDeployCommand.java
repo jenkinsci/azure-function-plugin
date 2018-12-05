@@ -34,7 +34,9 @@ public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCom
             tempDir = workspace.createTempDir(ZIP_FOLDER_NAME, null);
             final FilePath zipPath = tempDir.child(ZIP_NAME);
             final DirScanner.Glob globScanner = new DirScanner.Glob(filePattern, excludedFilesAndZip());
-            workspace.zip(zipPath.write(), globScanner);
+            final FilePath sourceDir = workspace.child(Util.fixNull(context.getSourceDirectory()));
+            int count = sourceDir.zip(zipPath.write(), globScanner);
+            context.logStatus(String.format("Archive %d target files under %s", count, sourceDir.getRemote()));
 
             WebAppBase functionApp = context.getWebAppBase();
             try (InputStream stream = zipPath.read()) {
