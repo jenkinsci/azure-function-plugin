@@ -84,6 +84,7 @@ public class ITZipDeployCommand extends IntegrationTest {
                 .define(testEnv.appServiceName)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(testEnv.azureResourceGroup)
+                .withLatestRuntimeVersion()
                 .create();
         TimeUnit.SECONDS.sleep(10);
         Assert.assertNotNull(function);
