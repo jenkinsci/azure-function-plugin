@@ -15,6 +15,7 @@ import com.microsoft.jenkins.function.util.Constants;
 import hudson.FilePath;
 import hudson.Util;
 import hudson.util.DirScanner;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +32,11 @@ public class ZipDeployCommand implements ICommand<ZipDeployCommand.IZipDeployCom
 
         final FilePath tempDir;
         try {
+            String targetDirectory = context.getTargetDirectory();
+            if (StringUtils.isNotBlank(targetDirectory)) {
+                context.logStatus(String.format("Your parameter %s for Target Directory will be ignored "
+                        + "for Java functions.", targetDirectory));
+            }
             tempDir = workspace.createTempDir(ZIP_FOLDER_NAME, null);
             final FilePath zipPath = tempDir.child(ZIP_NAME);
             final DirScanner.Glob globScanner = new DirScanner.Glob(filePattern, excludedFilesAndZip());
