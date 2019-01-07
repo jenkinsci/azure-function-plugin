@@ -1,5 +1,8 @@
 # Azure Function Plugin Changelog
 
+## Version 0.3.0, 2019-01-07
+* Deploy Java function with zip deployment instead of ftp deployment
+
 ## Version 0.2.1, 2018-04-03
 * Support for credentials lookup in [Folders](https://plugins.jenkins.io/cloudbees-folder)
 
