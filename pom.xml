@@ -11,22 +11,22 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>2.6</version>
+        <version>3.40</version>
     </parent>
     <artifactId>azure-function</artifactId>
     <version>0.3.1-SNAPSHOT</version>
     <packaging>hpi</packaging>
 
     <properties>
-        <jenkins.version>1.651.3</jenkins.version>
-        <java.level>7</java.level>
-        <jackson.version>2.9.9</jackson.version>
+        <jenkins.version>2.60.3</jenkins.version>
+        <java.level>8</java.level>
+        <jackson.version>2.10.1</jackson.version>
         <guava.version>19.0</guava.version>
         <powermock.version>1.7.0RC2</powermock.version>
-        <azuresdk.version>1.14.0</azuresdk.version>
-        <azure-commons.version>0.2.5</azure-commons.version>
-        <azure-credentials.version>1.6.0</azure-credentials.version>
-        <azure-app-service.version>0.3.0</azure-app-service.version>
+        <azuresdk.version>1.19.0</azuresdk.version>
+        <azure-commons.version>1.0.4</azure-commons.version>
+        <azure-credentials.version>1.6.1</azure-credentials.version>
+        <azure-app-service.version>1.0.0</azure-app-service.version>
     </properties>
 
     <name>Azure Function Plugin</name>
@@ -169,6 +169,51 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.11</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-annotations</artifactId>
+                <version>1.8.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>4.4.11</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>3.6</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.8.5</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>2.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jenkins-ci.plugins</groupId>
+                <artifactId>structs</artifactId>
+                <version>1.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.7</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <repositories>
         <repository>
