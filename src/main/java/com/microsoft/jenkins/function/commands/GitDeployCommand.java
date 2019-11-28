@@ -27,7 +27,6 @@ import hudson.model.TaskListener;
 import hudson.plugins.git.Branch;
 import hudson.plugins.git.GitTool;
 import hudson.remoting.VirtualChannel;
-import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jgit.dircache.DirCache;
 import org.eclipse.jgit.dircache.DirCacheBuildIterator;
 import org.eclipse.jgit.dircache.DirCacheBuilder;
@@ -56,6 +55,9 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
     private static final String DEPLOY_COMMIT_MESSAGE = "Deploy ${BUILD_TAG}";
     private static final String DEPLOY_BRANCH = "master";
     private static final String DEPLOY_REMOTE_BRANCH = "origin/" + DEPLOY_BRANCH;
+    private static final String GIT_ADD_ALL_PARAMETER = "-A";
+    private static final String JGIT_ADD_ALL_PARAMETER = ".";
+    private String gitAddAllPattern = JGIT_ADD_ALL_PARAMETER;
 
     @Override
     public void execute(final IGitDeployCommandData context) {
@@ -72,11 +74,15 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
             }
             final FilePath repo = ws.child(DEPLOY_REPO);
             final String gitExe = getGitExe(run, listener);
+            final boolean useGitCli = useGitCli(gitExe);
+            if (useGitCli) {
+                gitAddAllPattern = GIT_ADD_ALL_PARAMETER;
+            }
 
             GitClient git = Git.with(listener, env)
-                .in(repo)
-                .using(gitExe)
-                .getClient();
+                    .in(repo)
+                    .using(gitExe)
+                    .getClient();
 
             git.addCredentials(pubProfile.gitUrl(), new UsernamePasswordCredentialsImpl(
                     CredentialsScope.SYSTEM, "", "", pubProfile.gitUsername(), pubProfile.gitPassword()));
@@ -96,7 +102,8 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
 
             final FilePath sourceDir = ws.child(Util.fixNull(context.getSourceDirectory()));
             final String targetDir = Util.fixNull(context.getTargetDirectory());
-            copyAndAddFiles(git, repo, sourceDir, targetDir, context.getFilePath());
+            final String filePath = Util.fixNull(context.getFilePath());
+            copyAndAddFiles(git, repo, sourceDir, targetDir, filePath);
 
             if (!isWorkingTreeChanged(git)) {
                 context.logStatus("Deploy repository is up-to-date. Nothing to commit.");
@@ -110,7 +117,8 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
             git.commit(env.expand(DEPLOY_COMMIT_MESSAGE));
 
             git.push().ref(DEPLOY_BRANCH + ":" + DEPLOY_BRANCH).to(new URIish(pubProfile.gitUrl())).execute();
-
+            context.logStatus(String.format("Deploy to function with default host https://%s",
+                    context.getWebAppBase().defaultHostName()));
             context.setCommandState(CommandState.Success);
 
             AzureFunctionPlugin.sendEvent(Constants.AI_FUNCTION_APP, Constants.AI_GIT_DEPLOY,
@@ -120,7 +128,7 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
 
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
-            context.logError("Fail to deploy using Git: ", e);
+            context.logError("Fail to deploy using Git: " + e.getMessage());
             AzureFunctionPlugin.sendEvent(Constants.AI_FUNCTION_APP, Constants.AI_GIT_DEPLOY_FAILED,
                     "Run", AppInsightsUtils.hash(context.getJobContext().getRun().getUrl()),
                     "ResourceGroup", AppInsightsUtils.hash(context.getWebAppBase().resourceGroupName()),
@@ -248,10 +256,10 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
     /**
      * Copy selected files to git working directory and stage them.
      *
-     * @param git Git client
-     * @param repo Path to git repo
-     * @param sourceDir Source directory
-     * @param targetDir Target directory
+     * @param git          Git client
+     * @param repo         Path to git repo
+     * @param sourceDir    Source directory
+     * @param targetDir    Target directory
      * @param filesPattern Files name pattern
      * @throws IOException
      * @throws InterruptedException
@@ -263,15 +271,22 @@ public class GitDeployCommand implements ICommand<GitDeployCommand.IGitDeployCom
             final String targetDir,
             final String filesPattern) throws IOException, InterruptedException {
         final FilePath[] files = sourceDir.list(filesPattern);
-        for (final FilePath file: files) {
+        for (final FilePath file : files) {
             final String fileName = FilePathUtils.trimDirectoryPrefix(sourceDir, file);
             FilePath repoPath = new FilePath(repo.child(targetDir), fileName);
             file.copyTo(repoPath);
-
-            // Git always use Unix file path
-            String filePathInGit = FilenameUtils.separatorsToUnix(FilenameUtils.concat(targetDir, fileName));
-            git.add(filePathInGit);
         }
+        git.add(gitAddAllPattern);
+    }
+
+   /**
+     * Check whether will use git cli.
+     *
+     * @param gitExe Executable git.
+     * @return <code>true</code> if there is executable git and {@link Git#USE_CLI} is <code>true</code>
+     */
+    private boolean useGitCli(String gitExe) {
+        return gitExe != null && Git.USE_CLI;
     }
 
     /**
