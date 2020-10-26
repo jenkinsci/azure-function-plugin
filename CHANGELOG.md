@@ -1,9 +1,9 @@
 # Azure Function Plugin Changelog
 
-## Version 0.3.3, 2020-10-26
+## Version 0.3.2, 2020-10-26
 * Update maintainer
 
-## Version 0.3.2, 2020-04-26
+## Version 0.3.1, 2020-04-26
 * Fix security issue [CVE-2020-10969](https://github.com/advisories/GHSA-758m-v56v-grj4)
 * Fix file crippled during deploy
 
