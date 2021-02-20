@@ -1,5 +1,8 @@
 # Azure Function Plugin Changelog
 
+## Version 0.3.3, 2021-02-20
+* Update document
+
 ## Version 0.3.2, 2020-10-26
 * Update maintainer
 

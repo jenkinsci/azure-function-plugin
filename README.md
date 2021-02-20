@@ -1,5 +1,8 @@
 # Azure Function Plugin
 
+> ***Important***: This plugin is being retired and will be out of support as of February 29, 2024. Azure CLI is the currently recommended way to integrate Jenkins with Azure services. Refer to [Tutorial: Deploy to Azure Functions using Jenkins](https://docs.microsoft.com/en-us/azure/developer/jenkins/deploy-to-azure-functions) for more details.
+
+
 A Jenkins plugin to deploy an Azure Function.
 
 ## How to Install
